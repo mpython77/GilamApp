@@ -46177,6 +46177,7 @@ CanvasRenderer:
   m_GameObject: {fileID: 796741351}
   m_CullTransparentMesh: 1
 <<<<<<< HEAD
+<<<<<<< HEAD
 --- !u!114 &796741355
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46197,6 +46198,8 @@ MonoBehaviour:
   outputButton: {fileID: 1763529802}
 =======
 >>>>>>> parent of 3827629 (Merge branch 'main' of https://github.com/mpython77/GilamApp)
+=======
+>>>>>>> parent of 83a9b9d (1)
 --- !u!1 &799597974
 GameObject:
   m_ObjectHideFlags: 0
