@@ -1,4 +1,4 @@
-using UnityEngine;
+   using UnityEngine;
 using UnityEngine.UI; // Button uchun
 using TMPro; // TextMeshPro uchun
 using Firebase;
@@ -19,7 +19,6 @@ public class FirebaseDataWriter : MonoBehaviour
 
     void Start()
     {
-        // Firebase dependencies tekshirish
         FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
         {
             if (task.Result == DependencyStatus.Available)
@@ -30,13 +29,19 @@ public class FirebaseDataWriter : MonoBehaviour
                 // Tugmalar uchun listenerlar
                 saveButton.onClick.AddListener(SaveData);
                 outputButton.onClick.AddListener(DisplayData);
+
+                // Bu yerda chaqiring:
+                DisplayData();
             }
             else
             {
                 Debug.LogError("Firebase mavjud emas: " + task.Result.ToString());
             }
         });
+
+        // BU YERDA QO‘YMANG: DisplayData();  <-- bu xato
     }
+
 
     // Saqlash tugmasi bosilganda ishlaydi
     void SaveData()
