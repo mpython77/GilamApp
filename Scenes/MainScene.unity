@@ -17644,6 +17644,7 @@ RectTransform:
   - {fileID: 688368768}
   - {fileID: 259226025}
   - {fileID: 1763529801}
+<<<<<<< HEAD
   - {fileID: 382987111}
   m_Father: {fileID: 1331665025}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -17707,6 +17708,7 @@ MonoBehaviour:
   manzilInput: {fileID: 688368769}
   commentInput: {fileID: 259226026}
   saveButton: {fileID: 1763529802}
+<<<<<<< HEAD
   outputButton: {fileID: 382987112}
 --- !u!1 &312191619
 GameObject:
