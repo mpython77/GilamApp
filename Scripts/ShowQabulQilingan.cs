@@ -12,11 +12,12 @@ public class ShowQabulQilingan : MonoBehaviour
     int daroshka_soni = 0;
 
 
-    [Header("Input Fields")]
+    [Header("Input Fields Qabul")]
     public TMP_InputField inputNameQabul;
     public TMP_InputField inputPhoneQabul;
     public TMP_InputField inputAddressQabul;
     public TMP_InputField inputNoteQabul;
+    public TMP_InputField kvadratQabul;
     public TMP_InputField gilamSoni;
     public TMP_InputField korpaSoni;
     public TMP_InputField yakandozSoni;
@@ -25,9 +26,21 @@ public class ShowQabulQilingan : MonoBehaviour
     public TMP_InputField daroshkaSoni;
     public TMP_InputField xizmatNarxi;
 
+    [Header("Input Fields Yangi")]
+    public TMP_InputField inputNameYangi;
+    public TMP_InputField inputPhoneYangi;
+    public TMP_InputField inputAddressYangi;
+    public TMP_InputField inputNoteYangi;
+
     [Header("Prefabs & UI")]
+    public GameObject yangiPanelPrefab;
     public GameObject qabulQilinganPrefab;
+    public Transform gridContentYangi;
     public Transform gridContentQabul;
+    public Transform gridContentYuvilmoqda;
+    public Transform gridContentTayyor;
+
+    public List<string> holat = new List<string> { "Yangi", "Jarayonda", "Yuvilmoqda", "Tayyor" };
 
     private List<OrderDataQabul> orderListQabul = new List<OrderDataQabul>();
 
@@ -38,6 +51,7 @@ public class ShowQabulQilingan : MonoBehaviour
         int phone = ParseInt(inputPhoneQabul.text);
         string address = inputAddressQabul.text;
         string note = inputNoteQabul.text;
+        int kvadrat = ParseInt(kvadratQabul.text);
         int gilam = ParseInt(gilamSoni.text);
         int korpa = ParseInt(korpaSoni.text);
         int yakandoz = ParseInt(yakandozSoni.text);
@@ -46,11 +60,11 @@ public class ShowQabulQilingan : MonoBehaviour
         int daroshka = ParseInt(daroshkaSoni.text);
         int narx = ParseInt(xizmatNarxi.text);
 
-        string holati = "Qabul qilingan";
+        string holati = holat[1];
 
         // 2. Obyekt yaratish
         OrderDataQabul yangiBuyurtma = new OrderDataQabul(
-            name, phone, address, note, gilam, korpa, yakandoz, adyol, parda, daroshka, narx, holati
+            name, phone, address, note, kvadrat, gilam, korpa, yakandoz, adyol, parda, daroshka, narx, holati
         );
 
         orderListQabul.Add(yangiBuyurtma);
@@ -62,6 +76,7 @@ public class ShowQabulQilingan : MonoBehaviour
         item.transform.Find("Text (TMP)_tel").GetComponent<TMP_Text>().text = phone.ToString();
         item.transform.Find("Text (TMP)_manzil").GetComponent<TMP_Text>().text = address;
         item.transform.Find("Text (TMP)_izoh").GetComponent<TMP_Text>().text = note;
+        item.transform.Find("Text (TMP)_kvadrat").GetComponent <TMP_Text>().text = kvadrat.ToString();
         item.transform.Find("Text (TMP)_gilam_soni").GetComponent<TMP_Text>().text = gilam.ToString();
         item.transform.Find("Text (TMP)_Ko'rpa_soni").GetComponent<TMP_Text>().text = korpa.ToString();
         item.transform.Find("Text (TMP)_yakandoz_soni").GetComponent<TMP_Text>().text = yakandoz.ToString();
@@ -70,18 +85,35 @@ public class ShowQabulQilingan : MonoBehaviour
         item.transform.Find("Text (TMP)_doroshka_soni").GetComponent<TMP_Text>().text = daroshka.ToString();
 
         // 4. Inputlarni tozalash
-        inputNameQabul.text = "";
-        inputPhoneQabul.text = "";
-        inputAddressQabul.text = "";
-        inputNoteQabul.text = "";
-        gilamSoni.text = "";
-        korpaSoni.text = "";
-        yakandozSoni.text = "";
-        adyolSoni.text = "";
-        pardaSoni.text = "";
-        daroshkaSoni.text = "";
-        xizmatNarxi.text = "";
+
         ResetAll();
+    }
+
+    public void SaveYangi()
+    {
+        string name = inputNameYangi.text; ;
+        int phone = ParseInt(inputPhoneYangi.text);
+        string address = inputAddressYangi.text;
+        string note = inputNoteYangi.text;
+
+
+        OrderDataQabul yangiBuyurtma = new OrderDataQabul(
+           name, phone, address, note, 0, 0, 0, 0, 0, 0, 0,0, holat[0]
+       );
+
+        orderListQabul.Add(yangiBuyurtma);
+
+        GameObject item = Instantiate(yangiPanelPrefab, gridContentYangi);
+
+        item.transform.Find("Text (TMP)_ism").GetComponent<TMP_Text>().text = name;
+        item.transform.Find("Text (TMP)_tel").GetComponent<TMP_Text>().text = phone.ToString();
+        item.transform.Find("Text (TMP)_manzil").GetComponent<TMP_Text>().text = address;
+        item.transform.Find("Text (TMP)_izoh").GetComponent<TMP_Text>().text = note;
+
+
+
+        ResetAll();
+
     }
 
     // 🔧 Xatolik chiqmasligi uchun matndan int parse qilish yordamchi metod
@@ -170,6 +202,26 @@ public class ShowQabulQilingan : MonoBehaviour
         adyol_soni = 0;
         parda_soni = 0;
         daroshka_soni = 0;
+
+        inputNameYangi.text = "";
+        inputPhoneYangi.text = "";
+        inputAddressYangi.text = "";
+        inputNoteYangi.text = "";
+
+        inputNameQabul.text = "";
+        inputPhoneQabul.text = "";
+        inputAddressQabul.text = "";
+        inputNoteQabul.text = "";
+        kvadratQabul.text = "";
+        gilamSoni.text = "";
+        korpaSoni.text = "";
+        yakandozSoni.text = "";
+        adyolSoni.text = "";
+        pardaSoni.text = "";
+        daroshkaSoni.text = "";
+        xizmatNarxi.text = "";
+
+
     }
 
 }
