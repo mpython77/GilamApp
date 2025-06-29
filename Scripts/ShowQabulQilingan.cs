@@ -1,9 +1,16 @@
 ﻿using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using System.Linq;
+using System.Net;
+using UnityEditor.Experimental.GraphView;
 
 public class ShowQabulQilingan : MonoBehaviour
 {
+
+    public static ShowQabulQilingan Instance;
+
     int gilam_soni = 0;
     int korpa_soni = 0;
     int yakandoz_soni = 0;
@@ -39,13 +46,33 @@ public class ShowQabulQilingan : MonoBehaviour
     public Transform gridContentQabul;
     public Transform gridContentYuvilmoqda;
     public Transform gridContentTayyor;
+    public GameObject qabulInputUI;
+    public GameObject yangiInputUI;
+    public GameObject yangiBuyurtmaUI;
+
+
 
     public List<string> holat = new List<string> { "Yangi", "Jarayonda", "Yuvilmoqda", "Tayyor" };
 
-    private List<OrderDataQabul> orderListQabul = new List<OrderDataQabul>();
+    public List<OrderDataQabul> orderListQabul = new List<OrderDataQabul>();
+
+    private OrderDataQabul currentEditingOrder;
+
+    private bool isEditing = false;
+    private GameObject objectToEdit;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     public void SaveQabulQilingan()
     {
+        if ( isEditing)
+        {
+            ApplyEditedOrderQabul(objectToEdit);
+            return;
+        }
         // 1. Ma'lumotlarni olish va to'g'ri formatga o'girish
         string name = inputNameQabul.text;
         int phone = ParseInt(inputPhoneQabul.text);
@@ -84,13 +111,21 @@ public class ShowQabulQilingan : MonoBehaviour
         item.transform.Find("Text (TMP)_parda_soni").GetComponent<TMP_Text>().text = parda.ToString();
         item.transform.Find("Text (TMP)_doroshka_soni").GetComponent<TMP_Text>().text = daroshka.ToString();
 
-        // 4. Inputlarni tozalash
+        item.transform.GetComponent<QabulQilinganPrefab>().GetQabulInfo();        // 4. Inputlarni tozalash
 
         ResetAll();
+        
+        yangiBuyurtmaUI.SetActive(false);
     }
 
     public void SaveYangi()
     {
+        if (isEditing)
+        {
+            ApplyEditedOrderYangi(objectToEdit);
+            return;
+        }
+
         string name = inputNameYangi.text; ;
         int phone = ParseInt(inputPhoneYangi.text);
         string address = inputAddressYangi.text;
@@ -110,7 +145,7 @@ public class ShowQabulQilingan : MonoBehaviour
         item.transform.Find("Text (TMP)_manzil").GetComponent<TMP_Text>().text = address;
         item.transform.Find("Text (TMP)_izoh").GetComponent<TMP_Text>().text = note;
 
-
+        item.transform.GetComponent<YangiPrefab>().GetInfo();
 
         ResetAll();
 
@@ -224,4 +259,145 @@ public class ShowQabulQilingan : MonoBehaviour
 
     }
 
+    public void DeletePanel(GameObject objectToDestroy)
+    {
+        Destroy(objectToDestroy);
+    }
+
+    public void EditOrderByPhoneQabul(int phoneNumber, GameObject editObject)
+    {
+        isEditing = true;
+        objectToEdit = editObject;
+        // 1. Find the order
+        currentEditingOrder = orderListQabul.FirstOrDefault(o => o.phone == phoneNumber);
+
+        if (currentEditingOrder != null)
+        {
+            // 2. Activate UI and fill current data
+            qabulInputUI.SetActive(true);
+
+            inputNameQabul.text = currentEditingOrder.name;
+            inputPhoneQabul.text = currentEditingOrder.phone.ToString();
+            inputAddressQabul.text = currentEditingOrder.address;
+            inputNoteQabul.text = currentEditingOrder.note;
+            kvadratQabul.text = currentEditingOrder.kvadrat.ToString();
+            gilamSoni.text = currentEditingOrder.gilamSoni.ToString();
+            korpaSoni.text = currentEditingOrder.korpaSoni.ToString();
+            yakandozSoni.text = currentEditingOrder.yakandozSoni.ToString();
+            adyolSoni.text = currentEditingOrder.adyolSoni.ToString();
+            pardaSoni.text = currentEditingOrder.pardaSoni.ToString();
+            daroshkaSoni.text = currentEditingOrder.daroshkaSoni.ToString();
+            xizmatNarxi.text = currentEditingOrder.xizmatNarxi.ToString();
+        }
+        else
+        {
+            Debug.LogWarning("Buyurtma topilmadi.");
+        }
+    }
+    public void EditOrderByPhoneYangi(int phoneNumber, GameObject editObject)
+    {
+        isEditing = true;
+        objectToEdit = editObject;
+        // 1. Find the order
+        currentEditingOrder = orderListQabul.FirstOrDefault(o => o.phone == phoneNumber);
+
+        if (currentEditingOrder != null)
+        {
+            // 2. Activate UI and fill current data
+            yangiInputUI.SetActive(true);
+
+            inputNameYangi.text = currentEditingOrder.name;
+            inputPhoneYangi.text = currentEditingOrder.phone.ToString();
+            inputAddressYangi.text = currentEditingOrder.address;
+            inputNoteYangi.text = currentEditingOrder.note;
+        }
+        else
+        {
+            Debug.LogWarning("Buyurtma topilmadi.");
+        }
+    }
+
+
+    public void ApplyEditedOrderQabul(GameObject item)
+    {
+        if (currentEditingOrder == null)
+        {
+            Debug.LogWarning("Hech qanday buyurtma tanlanmagan.");
+            return;
+        }
+        
+        // 3. Update values from UI
+        currentEditingOrder.name = inputNameQabul.text;
+        currentEditingOrder.phone = ParseInt(inputPhoneQabul.text);
+        currentEditingOrder.address = inputAddressQabul.text;
+        currentEditingOrder.note = inputNoteQabul.text;
+        currentEditingOrder.kvadrat = ParseInt(kvadratQabul.text);
+        currentEditingOrder.gilamSoni = ParseInt(gilamSoni.text);
+        currentEditingOrder.korpaSoni = ParseInt(korpaSoni.text);
+        currentEditingOrder.yakandozSoni = ParseInt(yakandozSoni.text);
+        currentEditingOrder.adyolSoni = ParseInt(adyolSoni.text);
+        currentEditingOrder.pardaSoni = ParseInt(pardaSoni.text);
+        currentEditingOrder.daroshkaSoni = ParseInt(daroshkaSoni.text);
+        currentEditingOrder.xizmatNarxi = ParseInt(xizmatNarxi.text);
+
+
+        item.transform.Find("Text (TMP)_ism").GetComponent<TMP_Text>().text = currentEditingOrder.name;
+        item.transform.Find("Text (TMP)_tel").GetComponent<TMP_Text>().text = currentEditingOrder.phone.ToString();
+        item.transform.Find("Text (TMP)_manzil").GetComponent<TMP_Text>().text = currentEditingOrder.address;
+        item.transform.Find("Text (TMP)_izoh").GetComponent<TMP_Text>().text = currentEditingOrder.note;
+        item.transform.Find("Text (TMP)_kvadrat").GetComponent<TMP_Text>().text = currentEditingOrder.kvadrat.ToString();
+        item.transform.Find("Text (TMP)_gilam_soni").GetComponent<TMP_Text>().text = currentEditingOrder.gilamSoni.ToString();
+        item.transform.Find("Text (TMP)_Ko'rpa_soni").GetComponent<TMP_Text>().text = currentEditingOrder.korpaSoni.ToString();
+        item.transform.Find("Text (TMP)_yakandoz_soni").GetComponent<TMP_Text>().text = currentEditingOrder.yakandozSoni.ToString();
+        item.transform.Find("Text (TMP)_adyol_soni").GetComponent<TMP_Text>().text = currentEditingOrder.adyolSoni.ToString();
+        item.transform.Find("Text (TMP)_parda_soni").GetComponent<TMP_Text>().text = currentEditingOrder.pardaSoni.ToString();
+        item.transform.Find("Text (TMP)_doroshka_soni").GetComponent<TMP_Text>().text = currentEditingOrder.daroshkaSoni.ToString();
+
+        // 4. Hide the UI
+        Debug.Log("Buyurtma yangilandi.");
+
+        isEditing = false;
+        ResetAll();
+    }
+    public void ApplyEditedOrderYangi(GameObject item)
+    {
+        if (currentEditingOrder == null)
+        {
+            Debug.LogWarning("Hech qanday buyurtma tanlanmagan.");
+            return;
+        }
+     
+        // 3. Update values from UI
+        currentEditingOrder.name = inputNameYangi.text;
+        currentEditingOrder.phone = ParseInt(inputPhoneYangi.text);
+        currentEditingOrder.address = inputAddressYangi.text;
+        currentEditingOrder.note = inputNoteYangi.text;
+        currentEditingOrder.kvadrat = 0;
+        currentEditingOrder.gilamSoni = 0;
+        currentEditingOrder.korpaSoni = 0;
+        currentEditingOrder.yakandozSoni = 0;
+        currentEditingOrder.adyolSoni = 0;
+        currentEditingOrder.pardaSoni = 0;
+        currentEditingOrder.daroshkaSoni = 0;
+        currentEditingOrder.xizmatNarxi = 0;
+
+        Debug.Log("Name: " + currentEditingOrder.name);
+        Debug.Log("Phone: " + currentEditingOrder.phone);
+        Debug.Log("Manzil: " + currentEditingOrder.address);
+        Debug.Log("Izoh: " + currentEditingOrder.note);
+
+        item.transform.Find("Text (TMP)_ism").GetComponent<TMP_Text>().text = currentEditingOrder.name;
+        item.transform.Find("Text (TMP)_tel").GetComponent<TMP_Text>().text = currentEditingOrder.phone.ToString();
+        item.transform.Find("Text (TMP)_manzil").GetComponent<TMP_Text>().text = currentEditingOrder.address;
+        item.transform.Find("Text (TMP)_izoh").GetComponent<TMP_Text>().text = currentEditingOrder.note;
+
+        item.transform.GetComponent<YangiPrefab>().GetInfo();
+
+        // 4. Hide the UI
+
+        Debug.Log("Buyurtma yangilandi.");
+
+        isEditing = false;
+        ResetAll();
+    }
 }

@@ -8020,6 +8020,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 102481017}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &547356002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17619,11 +17631,15 @@ MonoBehaviour:
   gridContentQabul: {fileID: 60520410}
   gridContentYuvilmoqda: {fileID: 640681778}
   gridContentTayyor: {fileID: 1713200715}
+  qabulInputUI: {fileID: 470449607}
+  yangiInputUI: {fileID: 121367912}
+  yangiBuyurtmaUI: {fileID: 630267351}
   holat:
   - Yangi
   - Jarayonda
   - Yuvilmoqda
   - Tayyor
+  orderListQabul: []
 --- !u!1 &1422288180
 GameObject:
   m_ObjectHideFlags: 0
