@@ -61,4 +61,26 @@ public class QabulQilinganPrefab: MonoBehaviour
         else { Debug.Log("Xatolik yuz berdi"); }
     }
 
+
+    public void ChangeStatus()
+    {
+        OrderDataQabul orderToChange = ShowQabulQilingan.Instance.orderListQabul.FirstOrDefault(o => o.phone == telNomerQabul);
+
+        if (orderToChange != null)
+        {
+            string status = orderToChange.holati;
+            if (status == ShowQabulQilingan.Instance.holat[1])
+            {
+                orderToChange.holati = ShowQabulQilingan.Instance.holat[2];
+                gameObject.transform.SetParent(ShowQabulQilingan.Instance.gridContentYuvilmoqda);
+            }
+            else if (status == ShowQabulQilingan.Instance.holat[2])
+            {
+                orderToChange.holati = ShowQabulQilingan.Instance.holat[3];
+                gameObject.transform.SetParent(ShowQabulQilingan.Instance.gridContentTayyor);
+            }
+           
+        }
+
+    }
 }
