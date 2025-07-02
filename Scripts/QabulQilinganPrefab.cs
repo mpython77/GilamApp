@@ -79,8 +79,20 @@ public class QabulQilinganPrefab: MonoBehaviour
                 orderToChange.holati = ShowQabulQilingan.Instance.holat[3];
                 gameObject.transform.SetParent(ShowQabulQilingan.Instance.gridContentTayyor);
             }
+            else if (status == ShowQabulQilingan.Instance.holat[3])
+            {
+                ShowQabulQilingan.Instance.AddStatsToTotal(xizmatNarxi, kvadratQabul, gilamSoni, daroshkaSoni, 
+                    korpaSoni, yakandozSoni, adyolSoni, pardaSoni);
+                CallDeleteQabul();
+            }
            
         }
 
     }
+
+
+
+
+
+
 }
