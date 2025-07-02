@@ -1,7 +1,4 @@
-using System;
-
-
-[Serializable]
+[System.Serializable]
 public class OrderDataQabul
 {
     public string name;
@@ -17,8 +14,14 @@ public class OrderDataQabul
     public int daroshkaSoni;
     public int xizmatNarxi;
     public string holati;
+    public string saveTime; // Firebase uchun saqlangan vaqt
+    public string uniqueId; // Firebase uchun unikal ID
 
-    public OrderDataQabul(string name, int phone, string address, string note,int kvadrat, int gilamSoni, int korpaSoni, int yakandozSoni, int adyolSoni, int pardaSoni, int daroshkaSoni, int xizmatNarxi, string holati)
+    // Constructor
+    public OrderDataQabul(string name, int phone, string address, string note, int kvadrat,
+                         int gilamSoni, int korpaSoni, int yakandozSoni, int adyolSoni,
+                         int pardaSoni, int daroshkaSoni, int xizmatNarxi, string holati,
+                         string saveTime, string uniqueId = "")
     {
         this.name = name;
         this.phone = phone;
@@ -33,5 +36,10 @@ public class OrderDataQabul
         this.daroshkaSoni = daroshkaSoni;
         this.xizmatNarxi = xizmatNarxi;
         this.holati = holati;
+        this.saveTime = saveTime;
+        this.uniqueId = string.IsNullOrEmpty(uniqueId) ? System.Guid.NewGuid().ToString() : uniqueId;
     }
-}
+
+    // Default constructor JSON uchun
+    public OrderDataQabul() { }
+}   
