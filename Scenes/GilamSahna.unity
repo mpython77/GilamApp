@@ -11724,7 +11724,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 59.75
+  m_fontSize: 53.25
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -18928,7 +18928,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.113000005, y: 0.94939387}
   m_AnchorMax: {x: 0.73600006, y: 1}
-  m_AnchoredPosition: {x: -11.399994, y: 1.5}
+  m_AnchoredPosition: {x: -11.399994, y: 1.499939}
   m_SizeDelta: {x: -27.171326, y: -20.75769}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1268119063
@@ -20891,12 +20891,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfa4e36e59818174cbcd7693c3b2c572, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ismInput: {fileID: 94058416}
-  telefonInput: {fileID: 1317716357}
-  manzilInput: {fileID: 396088308}
-  commentInput: {fileID: 1769124120}
-  saveButton: {fileID: 500832414}
-  outputButton: {fileID: 500832414}
+  saveAllButton: {fileID: 547356001}
+  loadDataButton: {fileID: 0}
+  syncButton: {fileID: 0}
 --- !u!114 &1421473322
 MonoBehaviour:
   m_ObjectHideFlags: 0
