@@ -93,6 +93,79 @@ public class FirebaseDataWriter : MonoBehaviour
         });
     }
 
+    // YANGI FUNKSIYA: Buyurtmani edit qilish (uniqueId orqali)
+    public void EditOrderInFirebase(string uniqueId, OrderDataQabul updatedOrder)
+    {
+        if (string.IsNullOrEmpty(uniqueId))
+        {
+            Debug.LogError("UniqueId bo'sh!");
+            return;
+        }
+
+        // UniqueId ni yangi ma'lumotga ham berish
+        updatedOrder.uniqueId = uniqueId;
+
+        // Edit vaqtini yangilash
+        updatedOrder.saveTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+        // Avval Firebase'da bu ID mavjudligini tekshirish
+        dbReference.Child("Orders").Child(uniqueId).GetValueAsync().ContinueWithOnMainThread(checkTask =>
+        {
+            if (checkTask.IsCompleted)
+            {
+                DataSnapshot snapshot = checkTask.Result;
+
+                if (snapshot.Exists)
+                {
+                    // Ma'lumot mavjud - yangilash
+                    string json = JsonUtility.ToJson(updatedOrder);
+
+                    dbReference.Child("Orders").Child(uniqueId).SetRawJsonValueAsync(json).ContinueWithOnMainThread(updateTask =>
+                    {
+                        if (updateTask.IsCompleted)
+                        {
+                            Debug.Log($"Buyurtma muvaffaqiyatli yangilandi: ID = {uniqueId}, Yangi ism = {updatedOrder.name}");
+
+                            // Local list'ni ham yangilash
+                            UpdateLocalOrderList(uniqueId, updatedOrder);
+                        }
+                        else
+                        {
+                            Debug.LogError("Buyurtmani yangilashda xatolik: " + updateTask.Exception);
+                        }
+                    });
+                }
+                else
+                {
+                    Debug.LogError($"Bunday ID bilan buyurtma topilmadi: {uniqueId}");
+                }
+            }
+            else
+            {
+                Debug.LogError("Firebase'dan ma'lumot olishda xatolik: " + checkTask.Exception);
+            }
+        });
+    }
+
+    // Local orderListQabul ni ham yangilash
+    private void UpdateLocalOrderList(string uniqueId, OrderDataQabul updatedOrder)
+    {
+        if (ShowQabulQilingan.Instance != null)
+        {
+            var orderList = ShowQabulQilingan.Instance.orderListQabul;
+
+            for (int i = 0; i < orderList.Count; i++)
+            {
+                if (orderList[i].uniqueId == uniqueId)
+                {
+                    orderList[i] = updatedOrder;
+                    Debug.Log("Local list ham yangilandi!");
+                    break;
+                }
+            }
+        }
+    }
+
     // Firebase dan ma'lumotlarni yuklash
     public void LoadDataFromFirebase()
     {
@@ -169,7 +242,7 @@ public class FirebaseDataWriter : MonoBehaviour
         });
     }
 
-    // Buyurtmani yangilash
+    // Buyurtmani yangilash (eski metod - endi EditOrderInFirebase ishlatish tavsiya qilinadi)
     public void UpdateOrderInFirebase(OrderDataQabul updatedOrder)
     {
         updatedOrder.saveTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
