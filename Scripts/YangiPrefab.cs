@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using System.Linq;
 using System.ComponentModel;
+using System;
 
 public class YangiPrefab: MonoBehaviour
 {
@@ -53,8 +54,9 @@ public class YangiPrefab: MonoBehaviour
 
         if (orderToRemove != null)
         {
+            string idToDelete = orderToRemove.uniqueId;
             orders.Remove(orderToRemove);
-            ShowQabulQilingan.Instance.DeletePanel(gameObject);
+            ShowQabulQilingan.Instance.DeletePanel(gameObject, idToDelete);
             Debug.Log("Ma'lumot O'chdi");
 
         }
@@ -66,5 +68,6 @@ public class YangiPrefab: MonoBehaviour
     {
         ShowQabulQilingan.Instance.EditOrderByPhoneYangi(telNomer, gameObject);
     }
+
 
 }

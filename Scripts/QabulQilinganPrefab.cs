@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public class QabulQilinganPrefab: MonoBehaviour
 {
@@ -53,8 +54,9 @@ public class QabulQilinganPrefab: MonoBehaviour
 
         if (orderToRemove != null)
         {
+            string idToDelete = orderToRemove.uniqueId;
             orders.Remove(orderToRemove);
-            ShowQabulQilingan.Instance.DeletePanel(gameObject);
+            ShowQabulQilingan.Instance.DeletePanel(gameObject, idToDelete);
             Debug.Log("Ma'lumot O'chdi");
 
         }
@@ -73,11 +75,13 @@ public class QabulQilinganPrefab: MonoBehaviour
             {
                 orderToChange.holati = ShowQabulQilingan.Instance.holat[2];
                 gameObject.transform.SetParent(ShowQabulQilingan.Instance.gridContentYuvilmoqda);
+                ShowQabulQilingan.Instance.EditStatusInFirebase(telNomerQabul);
             }
             else if (status == ShowQabulQilingan.Instance.holat[2])
             {
                 orderToChange.holati = ShowQabulQilingan.Instance.holat[3];
                 gameObject.transform.SetParent(ShowQabulQilingan.Instance.gridContentTayyor);
+                ShowQabulQilingan.Instance.EditStatusInFirebase(telNomerQabul);
             }
             else if (status == ShowQabulQilingan.Instance.holat[3])
             {
@@ -89,10 +93,6 @@ public class QabulQilinganPrefab: MonoBehaviour
         }
 
     }
-
-
-
-
 
 
 }

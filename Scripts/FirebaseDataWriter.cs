@@ -28,7 +28,7 @@ public class FirebaseDataWriter : MonoBehaviour
                 //saveAllButton.onClick.AddListener(SaveAllOrdersToFirebase);
                 //loadDataButton.onClick.AddListener(LoadDataFromFirebase);
                 //syncButton.onClick.AddListener(SyncDataWithFirebase);
-                LoadDataFromFirebase();
+                SyncDataWithFirebase();
                 Debug.Log("Firebase tayyor!");
             }
             else

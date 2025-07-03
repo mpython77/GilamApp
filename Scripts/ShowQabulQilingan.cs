@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using System.Linq;
 using System.Net;
+using System;
 
 public class ShowQabulQilingan : MonoBehaviour
 {
@@ -68,6 +69,8 @@ public class ShowQabulQilingan : MonoBehaviour
     public List<OrderDataQabul> orderListQabul = new List<OrderDataQabul>();
 
     private OrderDataQabul currentEditingOrder;
+    private OrderDataQabul orderToDelete;
+
 
     private bool isEditing = false;
     private GameObject objectToEdit;
@@ -75,6 +78,11 @@ public class ShowQabulQilingan : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void Start()
+    {
+        Invoke("InstantiateAllOrders", 2f);
     }
 
     // ShowQabulQilingan scriptidagi SaveQabulQilingan metodini o'zgartiring:
@@ -290,12 +298,22 @@ public class ShowQabulQilingan : MonoBehaviour
 
         }
 
-        public void DeletePanel(GameObject objectToDestroy)
+    public void DeletePanel(GameObject objectToDestroy, string idToDelete)
+    {
+        if (orderListQabul == null)
         {
-            Destroy(objectToDestroy);
+            Debug.LogError("orderListQabul is null!");
+            return;
         }
 
-        public void EditOrderByPhoneQabul(int phoneNumber, GameObject editObject)
+        Debug.Log($"Deleting order with ID: {idToDelete}");
+
+        firebaseWriter.DeleteOrderFromFirebase(idToDelete);
+        Destroy(objectToDestroy);
+    }
+
+
+    public void EditOrderByPhoneQabul(int phoneNumber, GameObject editObject)
         {
             isEditing = true;
             objectToEdit = editObject;
@@ -472,5 +490,104 @@ public class ShowQabulQilingan : MonoBehaviour
         }
     }
 
+
+    public void InstantiateAllOrders()
+    {
+        SortOrdersByTimeAsc();
+
+        if (orderListQabul == null || orderListQabul.Count == 0)
+        {
+            Debug.LogWarning("Buyurtmalar ro'yxati bo'sh!");
+            return;
+        }
+
+        foreach (OrderDataQabul order in orderListQabul)
+        {
+            InstantiateOrderItemByHolat(order);
+        }
+
+        Debug.Log($"Umumiy {orderListQabul.Count} ta buyurtma sahifaga chiqarildi.");
+    }
+
+    public void InstantiateOrderItemByHolat(OrderDataQabul order)
+    {
+        GameObject item;
+
+        if (order.holati == holat[0]) // Yangi buyurtma
+        {
+            item = Instantiate(yangiPanelPrefab, gridContentYangi);
+
+            item.transform.Find("Text (TMP)_ism").GetComponent<TMP_Text>().text = order.name;
+            item.transform.Find("Text (TMP)_tel").GetComponent<TMP_Text>().text = order.phone.ToString();
+            item.transform.Find("Text (TMP)_manzil").GetComponent<TMP_Text>().text = order.address;
+            item.transform.Find("Text (TMP)_izoh").GetComponent<TMP_Text>().text = order.note;
+            item.transform.Find("Text (TMP)_savetime").GetComponent<TMP_Text>().text = order.saveTime;
+
+            item.transform.GetComponent<YangiPrefab>().GetInfo();
+        }
+        else
+        {
+            Transform parent = null;
+
+            if (order.holati == holat[1]) parent = gridContentQabul;
+            else if (order.holati == holat[2]) parent = gridContentYuvilmoqda;
+            else if (order.holati == holat[3]) parent = gridContentTayyor;
+            else
+            {
+                Debug.LogWarning($"Noma'lum holat: {order.holati}");
+                return;
+            }
+
+            item = Instantiate(qabulQilinganPrefab, parent);
+
+            item.transform.Find("Text (TMP)_ism").GetComponent<TMP_Text>().text = order.name;
+            item.transform.Find("Text (TMP)_tel").GetComponent<TMP_Text>().text = order.phone.ToString();
+            item.transform.Find("Text (TMP)_manzil").GetComponent<TMP_Text>().text = order.address;
+            item.transform.Find("Text (TMP)_izoh").GetComponent<TMP_Text>().text = order.note;
+            item.transform.Find("Text (TMP)_kvadrat").GetComponent<TMP_Text>().text = order.kvadrat.ToString();
+            item.transform.Find("Text (TMP)_gilam_soni").GetComponent<TMP_Text>().text = order.gilamSoni.ToString();
+            item.transform.Find("Text (TMP)_Ko'rpa_soni").GetComponent<TMP_Text>().text = order.korpaSoni.ToString();
+            item.transform.Find("Text (TMP)_yakandoz_soni").GetComponent<TMP_Text>().text = order.yakandozSoni.ToString();
+            item.transform.Find("Text (TMP)_adyol_soni").GetComponent<TMP_Text>().text = order.adyolSoni.ToString();
+            item.transform.Find("Text (TMP)_parda_soni").GetComponent<TMP_Text>().text = order.pardaSoni.ToString();
+            item.transform.Find("Text (TMP)_doroshka_soni").GetComponent<TMP_Text>().text = order.daroshkaSoni.ToString();
+            item.transform.Find("Text (TMP)_sana_vaqt").GetComponent<TMP_Text>().text = order.saveTime;
+
+            item.transform.GetComponent<QabulQilinganPrefab>().GetQabulInfo();
+
+        }
+    }
+
+    public void SortOrdersByTimeAsc()
+    {
+        if (orderListQabul == null || orderListQabul.Count == 0)
+        {
+            Debug.LogWarning("Order ro'yxati bo'sh. Sortirovka qilishning hojati yo'q.");
+            return;
+        }
+
+        orderListQabul = orderListQabul
+            .OrderBy(order =>
+            {
+                DateTime parsedTime;
+                if (DateTime.TryParse(order.saveTime, out parsedTime))
+                    return parsedTime;
+                else
+                    return DateTime.MinValue; // noto‘g‘ri vaqt bo‘lsa ro‘yxat boshiga qo‘yiladi
+            })
+            .ToList();
+
+        Debug.Log("Buyurtmalar vaqt bo'yicha sort qilindi (eski -> yangi).");
+    }
+
+
+    public void EditStatusInFirebase(int telNomer)
+    {
+        currentEditingOrder = orderListQabul.FirstOrDefault(o => o.phone == telNomer);
+        string idOrder = currentEditingOrder.uniqueId;
+
+        firebaseWriter.EditOrderInFirebase(idOrder, currentEditingOrder);
+
+    }
 
 }
