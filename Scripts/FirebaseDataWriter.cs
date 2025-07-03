@@ -9,9 +9,9 @@ using System.Collections.Generic;
 
 public class FirebaseDataWriter : MonoBehaviour
 {
-    [SerializeField] private Button saveAllButton; // Barcha ma'lumotlarni saqlash tugmasi
-    [SerializeField] private Button loadDataButton; // Ma'lumotlarni yuklash tugmasi
-    [SerializeField] private Button syncButton; // Sinxronlash tugmasi
+    //[SerializeField] private Button saveAllButton; // Barcha ma'lumotlarni saqlash tugmasi
+    //[SerializeField] private Button loadDataButton; // Ma'lumotlarni yuklash tugmasi
+    //[SerializeField] private Button syncButton; // Sinxronlash tugmasi
 
     private DatabaseReference dbReference;
 
@@ -24,10 +24,10 @@ public class FirebaseDataWriter : MonoBehaviour
                 FirebaseApp app = FirebaseApp.DefaultInstance;
                 dbReference = FirebaseDatabase.DefaultInstance.RootReference;
 
-                // Tugmalar uchun listenerlar
-                saveAllButton.onClick.AddListener(SaveAllOrdersToFirebase);
-                loadDataButton.onClick.AddListener(LoadDataFromFirebase);
-                syncButton.onClick.AddListener(SyncDataWithFirebase);
+                //// Tugmalar uchun listenerlar
+                //saveAllButton.onClick.AddListener(SaveAllOrdersToFirebase);
+                //loadDataButton.onClick.AddListener(LoadDataFromFirebase);
+                //syncButton.onClick.AddListener(SyncDataWithFirebase);
 
                 Debug.Log("Firebase tayyor!");
             }

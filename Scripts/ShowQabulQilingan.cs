@@ -1,69 +1,81 @@
-﻿    using System.Collections.Generic;
-    using TMPro;
-    using Unity.VisualScripting;
-    using UnityEngine;
-    using System.Linq;
-    using System.Net;
+﻿using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
+using UnityEngine;
+using System.Linq;
+using System.Net;
 
-    public class ShowQabulQilingan : MonoBehaviour
+public class ShowQabulQilingan : MonoBehaviour
+{
+
+    public static ShowQabulQilingan Instance;
+
+    int gilam_soni = 0;
+    int korpa_soni = 0;
+    int yakandoz_soni = 0;
+    int adyol_soni = 0;
+    int parda_soni = 0;
+    int daroshka_soni = 0;
+
+
+    [Header("Input Fields Qabul")]
+    public TMP_InputField inputNameQabul;
+    public TMP_InputField inputPhoneQabul;
+    public TMP_InputField inputAddressQabul;
+    public TMP_InputField inputNoteQabul;
+    public TMP_InputField kvadratQabul;
+    public TMP_InputField gilamSoni;
+    public TMP_InputField korpaSoni;
+    public TMP_InputField yakandozSoni;
+    public TMP_InputField adyolSoni;
+    public TMP_InputField pardaSoni;
+    public TMP_InputField daroshkaSoni;
+    public TMP_InputField xizmatNarxi;
+
+    [Header("Input Fields Yangi")]
+    public TMP_InputField inputNameYangi;
+    public TMP_InputField inputPhoneYangi;
+    public TMP_InputField inputAddressYangi;
+    public TMP_InputField inputNoteYangi;
+
+    [Header("Prefabs & UI")]
+    public GameObject yangiPanelPrefab;
+    public GameObject qabulQilinganPrefab;
+    public Transform gridContentYangi;
+    public Transform gridContentQabul;
+    public Transform gridContentYuvilmoqda;
+    public Transform gridContentTayyor;
+    public GameObject qabulInputUI;
+    public GameObject yangiInputUI;
+    public GameObject yangiBuyurtmaUI;
+
+    public FirebaseDataWriter firebaseWriter;
+    public Statistika statistika;
+
+
+    public int totalBalance = 0;
+    public int totalKvadrat = 0;
+    public int totalGilam = 0;
+    public int totalDaroshka = 0;
+    public int totalKorpa = 0;
+    public int totalYakandoz = 0;
+    public int totalAdyol = 0;
+    public int totalParda = 0;
+
+
+    public List<string> holat = new List<string> { "Yangi", "Jarayonda", "Yuvilmoqda", "Tayyor" };
+
+    public List<OrderDataQabul> orderListQabul = new List<OrderDataQabul>();
+
+    private OrderDataQabul currentEditingOrder;
+
+    private bool isEditing = false;
+    private GameObject objectToEdit;
+
+    private void Awake()
     {
-
-        public static ShowQabulQilingan Instance;
-
-        int gilam_soni = 0;
-        int korpa_soni = 0;
-        int yakandoz_soni = 0;
-        int adyol_soni = 0;
-        int parda_soni = 0;
-        int daroshka_soni = 0;
-
-
-        [Header("Input Fields Qabul")]
-        public TMP_InputField inputNameQabul;
-        public TMP_InputField inputPhoneQabul;
-        public TMP_InputField inputAddressQabul;
-        public TMP_InputField inputNoteQabul;
-        public TMP_InputField kvadratQabul;
-        public TMP_InputField gilamSoni;
-        public TMP_InputField korpaSoni;
-        public TMP_InputField yakandozSoni;
-        public TMP_InputField adyolSoni;
-        public TMP_InputField pardaSoni;
-        public TMP_InputField daroshkaSoni;
-        public TMP_InputField xizmatNarxi;
-
-        [Header("Input Fields Yangi")]
-        public TMP_InputField inputNameYangi;
-        public TMP_InputField inputPhoneYangi;
-        public TMP_InputField inputAddressYangi;
-        public TMP_InputField inputNoteYangi;
-
-        [Header("Prefabs & UI")]
-        public GameObject yangiPanelPrefab;
-        public GameObject qabulQilinganPrefab;
-        public Transform gridContentYangi;
-        public Transform gridContentQabul;
-        public Transform gridContentYuvilmoqda;
-        public Transform gridContentTayyor;
-        public GameObject qabulInputUI;
-        public GameObject yangiInputUI;
-        public GameObject yangiBuyurtmaUI;
-
-
-
-        public List<string> holat = new List<string> { "Yangi", "Jarayonda", "Yuvilmoqda", "Tayyor" };
-
-        public List<OrderDataQabul> orderListQabul = new List<OrderDataQabul>();
-
-        private OrderDataQabul currentEditingOrder;
-
-        private bool isEditing = false;
-        private GameObject objectToEdit;
-
-        private void Awake()
-        {
-            Instance = this;
-        }
+        Instance = this;
+    }
 
     // ShowQabulQilingan scriptidagi SaveQabulQilingan metodini o'zgartiring:
     public void SaveQabulQilingan()
@@ -99,7 +111,7 @@
         orderListQabul.Add(yangiBuyurtma);
 
         // 3. Firebase ga saqlash
-        FirebaseDataWriter firebaseWriter = FindObjectOfType<FirebaseDataWriter>();
+        //FirebaseDataWriter firebaseWriter = FindObjectOfType<FirebaseDataWriter>();
         if (firebaseWriter != null)
         {
             firebaseWriter.SaveNewOrder(yangiBuyurtma);
@@ -119,8 +131,11 @@
         item.transform.Find("Text (TMP)_adyol_soni").GetComponent<TMP_Text>().text = adyol.ToString();
         item.transform.Find("Text (TMP)_parda_soni").GetComponent<TMP_Text>().text = parda.ToString();
         item.transform.Find("Text (TMP)_doroshka_soni").GetComponent<TMP_Text>().text = daroshka.ToString();
+        item.transform.Find("Text (TMP)_sana_vaqt").GetComponent<TMP_Text>().text = saveTime;
 
         item.transform.GetComponent<QabulQilinganPrefab>().GetQabulInfo();
+        item.transform.GetComponent<QabulQilinganPrefab>().xizmatNarxi = narx.ToString();
+
 
         ResetAll();
         yangiBuyurtmaUI.SetActive(false);
@@ -148,7 +163,7 @@
         orderListQabul.Add(yangiBuyurtma);
 
         // Firebase ga saqlash
-        FirebaseDataWriter firebaseWriter = FindObjectOfType<FirebaseDataWriter>();
+        //FirebaseDataWriter firebaseWriter = FindObjectOfType<FirebaseDataWriter>();
         if (firebaseWriter != null)
         {
             firebaseWriter.SaveNewOrder(yangiBuyurtma);
@@ -160,6 +175,7 @@
         item.transform.Find("Text (TMP)_tel").GetComponent<TMP_Text>().text = phone.ToString();
         item.transform.Find("Text (TMP)_manzil").GetComponent<TMP_Text>().text = address;
         item.transform.Find("Text (TMP)_izoh").GetComponent<TMP_Text>().text = note;
+        item.transform.Find("Text (TMP)_savetime").GetComponent<TMP_Text>().text = saveTime;    
 
         item.transform.GetComponent<YangiPrefab>().GetInfo();
 
@@ -367,6 +383,8 @@
             item.transform.Find("Text (TMP)_adyol_soni").GetComponent<TMP_Text>().text = currentEditingOrder.adyolSoni.ToString();
             item.transform.Find("Text (TMP)_parda_soni").GetComponent<TMP_Text>().text = currentEditingOrder.pardaSoni.ToString();
             item.transform.Find("Text (TMP)_doroshka_soni").GetComponent<TMP_Text>().text = currentEditingOrder.daroshkaSoni.ToString();
+            
+            item.transform.GetComponent<QabulQilinganPrefab>().xizmatNarxi = currentEditingOrder.xizmatNarxi.ToString();
 
             // 4. Hide the UI
             Debug.Log("Buyurtma yangilandi.");
@@ -396,11 +414,6 @@
             currentEditingOrder.daroshkaSoni = 0;
             currentEditingOrder.xizmatNarxi = 0;
 
-            Debug.Log("Name: " + currentEditingOrder.name);
-            Debug.Log("Phone: " + currentEditingOrder.phone);
-            Debug.Log("Manzil: " + currentEditingOrder.address);
-            Debug.Log("Izoh: " + currentEditingOrder.note);
-
             item.transform.Find("Text (TMP)_ism").GetComponent<TMP_Text>().text = currentEditingOrder.name;
             item.transform.Find("Text (TMP)_tel").GetComponent<TMP_Text>().text = currentEditingOrder.phone.ToString();
             item.transform.Find("Text (TMP)_manzil").GetComponent<TMP_Text>().text = currentEditingOrder.address;
@@ -415,4 +428,29 @@
             isEditing = false;
             ResetAll();
         }
+    public void AddStatsToTotal(string narx, string kvadrat, string gilam, string daroshka, string korpa, string yakandoz, string adyol, string parda)
+    {
+        totalBalance += ParseSafe(narx);
+        totalKvadrat += ParseSafe(kvadrat);
+        totalGilam += ParseSafe(gilam);
+        totalDaroshka += ParseSafe(daroshka);
+        totalKorpa += ParseSafe(korpa);
+        totalYakandoz += ParseSafe(yakandoz);
+        totalAdyol += ParseSafe(adyol);
+        totalParda += ParseSafe(parda);
+        statistika.ShowTotalStats();
     }
+
+    private int ParseSafe(string input)
+    {
+        if (int.TryParse(input, out int result))
+            return result;
+        else
+        {
+            Debug.LogWarning($"Invalid number input: \"{input}\"");
+            return 0;
+        }
+    }
+
+
+}
