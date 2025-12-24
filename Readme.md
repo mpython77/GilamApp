@@ -279,7 +279,7 @@ SOFTWARE.
 
 - **Developer**: mpython77
 - **GitHub**: [@mpython77](https://github.com/mpython77)
-- **Email**: your.email@example.com
+- **Email**: muhammadjon0513@gmail.com
 - **Issues**: [GitHub Issues](https://github.com/mpython77/GilamApp/issues)
 
 ## 🙏 Acknowledgments
