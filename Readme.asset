@@ -1,43 +1,51 @@
-# Gilam App
+# Gilam App 🧼
 
 ## Description
 Gilam App is a mobile application developed for carpet washing companies to manage customer orders efficiently.  
 The application allows companies to track orders, monitor their processing stages, and calculate income through a centralized system.
 
-## Features
-- Order creation and management
-- Real-time order status tracking (current stage of each order)
-- Display of total active orders
-- Income calculation and financial tracking
-- General statistics and analytics dashboard
-- Fully online application with real-time data synchronization
+## Features ✨
+- 📝 Order creation and management
+- ⏱️ Real-time order status tracking (current stage of each order)
+- 📊 Display of total active orders
+- 💰 Income calculation and financial tracking
+- 📈 General statistics and analytics dashboard
+- 🌐 Fully online application with real-time data synchronization
 
-## Technologies
+## Technologies 🛠️
 - Unity Engine
 - C#
 - Firebase (Database & Authentication)
 - Internet-based real-time data processing
 
-## Functionality Overview
+## Functionality Overview ⚙️
 The application displays:
-- How many orders are currently active
-- The processing stage of each order
-- Overall business statistics and revenue information
+- 🔹 How many orders are currently active
+- 🔹 The processing stage of each order
+- 🔹 Overall business statistics and revenue information
 
 All data is stored in Firebase and synchronized in real time, ensuring reliable and up-to-date information across devices.
 
-## How to Run
+## How to Run ▶️
 1. Clone the repository
 2. Open the project using Unity Hub
 3. Use the recommended Unity version
 4. Configure Firebase settings
 5. Run the application on an Android device or emulator
 
-## Screenshots
+## Screenshots 🖼️
 
-<img src="photo_3_2025-12-24_14-34-32.jpg" width="250"/>
-<img src="photo_1_2025-12-24_14-34-31.jpg" width="250"/>
-<img src="photo_2_2025-12-24_14-34-32.jpg" width="250"/>
+### Main Screen
+<img src="photo_3_2025-12-24_14-34-32.jpg" width="300"/>
 
-<img src="photo_4_2025-12-24_14-34-32.jpg" width="250"/>
-<img src="photo_5_2025-12-24_14-34-32.jpg" width="250"/>
+### Accepted Orders
+<img src="photo_1_2025-12-24_14-34-31.jpg" width="300"/>
+
+### Add New Order
+<img src="photo_2_2025-12-24_14-34-32.jpg" width="300"/>
+
+### Search Screen
+<img src="photo_4_2025-12-24_14-34-32.jpg" width="300"/>
+
+### Statistics Screen
+<img src="photo_5_2025-12-24_14-34-32.jpg" width="300"/>
