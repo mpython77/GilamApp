@@ -1,40 +1,37 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fcf7219bab7fe46a1ad266029b2fee19, type: 3}
-  m_Name: Readme
-  m_EditorClassIdentifier: 
-  icon: {fileID: 2800000, guid: eda43ba821d75d046a45209bde150047, type: 3}
-  title: Universal Mobile 2D Template
-  sections:
-  - heading: Welcome to the Universal Mobile 2D Template
-    text: This template sets up the right Project settings for developing a 2D game
-      on mobile. Also it includes some of the recommended packages for developing
-      on mobile.
-    linkText: 
-    url: 
-  - heading: Forums iOS
-    text: 
-    linkText: Get answers and support
-    url: https://discussions.unity.com/tag/iOS
-  - heading: Forums Android
-    text: 
-    linkText: Get answers and support
-    url: https://discussions.unity.com/tag/Android
-  - heading: Bugs
-    text: 
-    linkText: Report any bugs
-    url: https://unity3d.com/unity/qa/bug-reporting
-  - heading: Template feedback
-    text: 
-    linkText: Share your feedback on this template with us
-    url: https://unitysoftware.co1.qualtrics.com/jfe/form/SV_b8GWOIYxi4l6PDE?templatename=mobile2d
-  loadedLayout: 1
+# Gilam App
+
+## Description
+Gilam App is a mobile application developed for carpet washing companies to manage customer orders efficiently.  
+The application allows companies to track orders, monitor their processing stages, and calculate income through a centralized system.
+
+## Features
+- Order creation and management
+- Real-time order status tracking (current stage of each order)
+- Display of total active orders
+- Income calculation and financial tracking
+- General statistics and analytics dashboard
+- Fully online application with real-time data synchronization
+
+## Technologies
+- Unity Engine
+- C#
+- Firebase (Database & Authentication)
+- Internet-based real-time data processing
+
+## Functionality Overview
+The application displays:
+- How many orders are currently active
+- The processing stage of each order
+- Overall business statistics and revenue information
+
+All data is stored in Firebase and synchronized in real time, ensuring reliable and up-to-date information across devices.
+
+## How to Run
+1. Clone the repository
+2. Open the project using Unity Hub
+3. Use the recommended Unity version
+4. Configure Firebase settings
+5. Run the application on an Android device or emulator
+
+## Screenshots / Demo
+(Add screenshots or video links here)
