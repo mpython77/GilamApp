@@ -1,4 +1,4 @@
-# Gilam App 🧼
+# Gilam App 🌸
 
 ![Unity](https://img.shields.io/badge/Unity-2021.3+-000000?style=for-the-badge&logo=unity&logoColor=white)
 ![C#](https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=csharp&logoColor=white)
@@ -7,19 +7,19 @@
 
 ## Description
 
-Gilam App is a mobile application developed for carpet washing companies to manage customer orders efficiently.  
+Gilam App is a mobile application developed for carpet washing companies to manage customer orders efficiently.
 The application allows companies to track orders, monitor their processing stages, and calculate income through a centralized system.
 
 ## Features ✨
 
-- 📝 Order creation and management
+- 📋 Order creation and management
 - ⏱️ Real-time order status tracking (current stage of each order)
 - 📊 Display of total active orders
 - 💰 Income calculation and financial tracking
 - 📈 General statistics and analytics dashboard
 - 🌐 Fully online application with real-time data synchronization
 
-## Technologies 🛠️
+## Technologies 🔧
 
 - Unity Engine
 - C#
