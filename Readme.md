@@ -161,40 +161,7 @@ In Firebase Console, enable:
 
 </div>
 
-## 📂 Project Structure
-```
-GilamApp/
-├── Assets/
-│   ├── Scripts/
-│   │   ├── Managers/
-│   │   │   ├── OrderManager.cs
-│   │   │   ├── DatabaseManager.cs
-│   │   │   └── AuthManager.cs
-│   │   ├── Models/
-│   │   │   ├── Order.cs
-│   │   │   └── Customer.cs
-│   │   ├── UI/
-│   │   │   ├── MainScreen.cs
-│   │   │   ├── OrderListUI.cs
-│   │   │   └── StatisticsUI.cs
-│   │   └── Utils/
-│   │       └── Helpers.cs
-│   ├── Scenes/
-│   │   ├── LoginScene.unity
-│   │   ├── MainScene.unity
-│   │   └── StatisticsScene.unity
-│   ├── Prefabs/
-│   │   ├── OrderItem.prefab
-│   │   └── UI Elements/
-│   ├── Resources/
-│   │   ├── Icons/
-│   │   └── Fonts/
-│   └── StreamingAssets/
-│       └── google-services.json
-├── Packages/
-├── ProjectSettings/
-└── README.md
-```
+
 
 ## 🔧 Configuration
 
